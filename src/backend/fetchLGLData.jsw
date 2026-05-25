@@ -1,0 +1,68 @@
+import { fetch } from 'wix-fetch';
+
+function smartSplit(line) {
+  return line
+    .match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+    ?.map(s => s.replace(/^"(.*)"$/, "$1").replace(/\r/g, "").trim()) || [];
+}
+
+function toNumber(val) {
+  if (!val) return 0;
+  const cleaned = String(val).replace(/[^0-9.-]/g, "");
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : 0;
+}
+
+export async function getLGLData() {
+  const url =
+    "https://justiceleagueglm.littlegreenlight.com/rptlink/c6a0a3da-df47-45f3-969e-53a4586160d0";
+
+  try {
+    const response = await fetch(url, { method: "GET" });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data: ${response.status}`);
+    }
+
+    const csvText = await response.text();
+    const lines = csvText.split("\n").filter(line => line.trim().length);
+    const header = smartSplit(lines[0]);
+
+    // Core column indexes
+    const idIdx = header.findIndex(h => /id/i.test(h));
+    const nameIdx = header.findIndex(h => /addressee/i.test(h));
+    const groupIdx = header.findIndex(h => /group/i.test(h));
+
+    // ✅ Detect ALL year columns >= 2025 automatically
+    const yearColumns = header
+      .map((h, idx) => {
+        const match = h.match(/\b(20\d{2})\b/); // finds 2025, 2026, etc.
+        if (!match) return null;
+
+        const year = Number(match[1]);
+        return year >= 2025 ? { year, idx } : null;
+      })
+      .filter(Boolean);
+
+    const rows = lines.slice(1).map((line, index) => {
+      const cols = smartSplit(line);
+
+      const row = {
+        _id: cols[idIdx] || String(index + 1),
+        name: cols[nameIdx] || "Anonymous",
+        group: cols[groupIdx] || ""
+      };
+
+      // ✅ Dynamically add amountYYYY fields
+      yearColumns.forEach(({ year, idx }) => {
+        row[`amount${year}`] = toNumber(cols[idx]);
+      });
+
+      return row;
+    });
+
+    return rows;
+  } catch (error) {
+    console.error("Error fetching LGL data:", error);
+    throw error;
+  }
+}

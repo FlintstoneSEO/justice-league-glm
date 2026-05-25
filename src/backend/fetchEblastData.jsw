@@ -1,0 +1,57 @@
+import { fetch } from 'wix-fetch';
+
+export async function getEblastData() {
+    const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT2RPF8FssG76A6Kgcpr8BX2-DHnojkxWkK-NpbesajnpS8uSIQgMJJCuTJULerlyqRZ69DjEdTUG_W/pub?gid=0&single=true&output=csv";
+
+    try {
+        const response = await fetch(url, { method: 'get' });
+        if (!response.ok) throw new Error("Failed to fetch");
+
+        const csv = await response.text();
+        const rows = parseCSV(csv);
+
+        // Map to desired format, skipping header row
+        return rows.slice(1).map((row, index) => ({
+            _id: String(index + 1),
+            date: row[0],
+            subject: row[1],
+            link: row[2]
+        }));
+    } catch (err) {
+        console.error("Eblast fetch failed:", err);
+        return [];
+    }
+}
+
+// ✅ Robust CSV parser that respects quoted fields (commas inside quotes)
+function parseCSV(text) {
+    const rows = [];
+    const lines = text.trim().split("\n");
+
+    for (const line of lines) {
+        const row = [];
+        let current = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            const nextChar = line[i + 1];
+
+            if (char === '"' && inQuotes && nextChar === '"') {
+                current += '"'; // Escaped quote
+                i++; // Skip next quote
+            } else if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+                row.push(current);
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        row.push(current); // Push last cell
+        rows.push(row.map(cell => cell.replace(/\r/g, "").trim()));
+    }
+
+    return rows;
+}
