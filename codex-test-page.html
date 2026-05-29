@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Justice League Codex Test Page</title>
+  <style>
+    :root {
+      --jl-black: #111111;
+      --jl-charcoal: #1f1f1f;
+      --jl-gold: #c9a646;
+      --jl-gold-light: #f3df9f;
+      --jl-cream: #f8f4ea;
+      --jl-white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, var(--jl-black), var(--jl-charcoal));
+      color: var(--jl-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    .test-page {
+      width: min(960px, 100%);
+      border: 1px solid rgba(201, 166, 70, 0.45);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: clamp(48px, 8vw, 88px);
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: var(--jl-gold-light);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--jl-white);
+      font-size: clamp(2.75rem, 8vw, 6rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    h1 span {
+      color: var(--jl-gold);
+      display: block;
+    }
+
+    p {
+      width: min(680px, 100%);
+      margin: 28px auto 0;
+      color: var(--jl-cream);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      line-height: 1.7;
+    }
+
+    .button-row {
+      margin-top: 36px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    }
+
+    .button-primary {
+      background: var(--jl-gold);
+      color: var(--jl-black);
+    }
+
+    .button-secondary {
+      border: 1px solid rgba(248, 244, 234, 0.45);
+      color: var(--jl-white);
+    }
+
+    .footer-note {
+      border-top: 1px solid rgba(201, 166, 70, 0.28);
+      background: rgba(0, 0, 0, 0.22);
+      padding: 20px 32px;
+      color: rgba(248, 244, 234, 0.8);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="test-page" aria-label="Justice League Codex test page">
+    <section class="hero">
+      <span class="eyebrow">Codex Test Page</span>
+      <h1>Hi <span>Justice League</span></h1>
+      <p>
+        This is a simple branded test page for validating Codex changes in the
+        Justice League of Greater Lansing Michigan repository.
+      </p>
+      <div class="button-row" aria-label="Test actions">
+        <a class="button button-primary" href="https://www.justiceleagueglm.org/" target="_blank" rel="noreferrer">Visit Main Site</a>
+        <a class="button button-secondary" href="https://www.justiceleagueglm.org/join-the-work" target="_blank" rel="noreferrer">Join the Work</a>
+      </div>
+    </section>
+    <div class="footer-note">
+      Safe testing file only. This does not change the live Wix navigation until connected inside Wix or merged into a deployment workflow.
+    </div>
+  </main>
+</body>
+</html>
