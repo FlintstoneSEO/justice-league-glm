@@ -30,6 +30,7 @@ export async function getLGLData() {
     // Core column indexes
     const idIdx = header.findIndex(h => /id/i.test(h));
     const nameIdx = header.findIndex(h => /addressee/i.test(h));
+    const honoraryNameIdx = header.findIndex(h => /\bhonou?r(?:ary|ee)\s*name\b/i.test(h));
     const groupIdx = header.findIndex(h => /group/i.test(h));
 
     // ✅ Detect ALL year columns >= 2025 automatically
@@ -49,6 +50,7 @@ export async function getLGLData() {
       const row = {
         _id: cols[idIdx] || String(index + 1),
         name: cols[nameIdx] || "Anonymous",
+        honoraryName: cols[honoraryNameIdx] || "",
         group: cols[groupIdx] || ""
       };
 

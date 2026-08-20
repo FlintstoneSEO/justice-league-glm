@@ -29,7 +29,14 @@ $w.onReady(async () => {
       $w(repeaterId).data = list;
 
       $w(repeaterId).onItemReady(($item, itemData) => {
-        $item(nameTextId).text = itemData.name ;
+        const addresseeName = String(itemData.name || "Anonymous").trim();
+        const honoraryName = String(itemData.honoraryName || "").trim();
+        const hasHonoraryName = /^honor\b/i.test(honoraryName);
+        const honoreeName = honoraryName.replace(/^honor\b[\s:,-]*/i, "").trim();
+
+        $item(nameTextId).text = hasHonoraryName && honoreeName
+          ? `${addresseeName} (In Honor of ${honoreeName})`
+          : addresseeName;
 
         // Optional: if you add a text element for amount, you can enable this:
         // $item("#textAmount").text = `$${Number(itemData?.[amountField] || 0).toLocaleString()}`;
