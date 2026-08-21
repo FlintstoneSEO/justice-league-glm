@@ -1,8 +1,8 @@
 # E-News Briefs archive
 
-The public archive at `/e-news-briefs` uses the Mailchimp RSS feed at `https://us18.campaign-archive.com/feed?u=8258e874c006b3176811c5671&id=03105787dc`.
+The public archive at `/e-news-briefs` uses the published Google Sheet CSV through the existing backend module.
 
-- Backend: `src/backend/newsletterfeed.web.js` (import as `backend/newsletterfeed.web`).
+- Backend: `src/backend/fetchEblastData.jsw` (import as `backend/fetchEblastData.jsw`).
 - Page code: `src/pages/E-News Briefs.gvqjx.js`.
 - Wix HTML Component ID: `#htmlNewsletterArchive`.
 - Embed source: `wix-embeds/e-news-briefs.html`. Paste this complete file into the matching Wix HTML Component whenever its code needs updating; Wix does not sync embedded HTML to this repository.
@@ -10,16 +10,16 @@ The public archive at `/e-news-briefs` uses the Mailchimp RSS feed at `https://u
 
 ## Wix Editor setup
 
-Keep the HTML Component ID as `htmlNewsletterArchive`. Enable scrolling (or leave it set to the default **Auto**) in the editor. Page code also sets `scrolling = "auto"`; this is intentional, because Search, year filtering, Load More, and responsive reflow can exceed the fixed component height. Set a practical initial component height (at least 900px is recommended) so the archive is comfortable to browse, while the iframe scrollbar remains available for additional content.
+Keep the HTML Component ID as `htmlNewsletterArchive`. Disable scrolling in the editor; page code also sets `scrolling = "no"`. The embed renders one featured issue, at most six archive cards, and Previous/Next controls, so its height remains predictable. Set a practical component height (at least 900px is recommended).
 
 ## Testing
 
-In Preview, open E-News Briefs and confirm the featured newest issue, search, year filter, Load More, and external links. Then publish and repeat at `https://www.justiceleagueglm.org/e-news-briefs` in a signed-out browser. Check the browser console and Wix logs for the graceful error state if Mailchimp is unavailable.
+In Preview, open E-News Briefs and confirm the featured newest issue, search, year filter, six-card pagination, and external links. Then publish and repeat at `https://www.justiceleagueglm.org/e-news-briefs` in a signed-out browser. Check the browser console and Wix logs for the graceful error state if Google Sheets is unavailable.
 
 ## Rollback
 
-`src/backend/fetchEblastData.jsw` is retained temporarily as the former Google Sheets implementation. It has no current repository imports. Do not delete it until the Mailchimp archive has been verified in production and a rollback is no longer needed.
+`src/backend/newsletterfeed.web.js` is not used by the E-News archive. Do not remove it unless its remaining references have been reviewed for other consumers.
 
 ## Permissions
 
-`getNewsletterFeed` explicitly uses `Permissions.Anyone`, which allows anonymous visitors to invoke only this public `.web.js` method. `src/backend/permissions.json` remains unchanged because it configures deprecated `.jsw` web modules, not `.web.js` methods.
+Confirm that `getEblastData()` remains available to public page code under the site's existing backend permissions configuration.
