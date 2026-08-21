@@ -1,4 +1,4 @@
-import { getEblastData } from 'backend/fetchEblastData.jsw';
+/* import { getEblastData } from 'backend/fetchEblastData.jsw';
 
 $w.onReady(() => {
     getEblastData()
@@ -18,3 +18,70 @@ $w.onReady(() => {
             console.error("Error loading eblast data:", error);
         });
 });
+ */
+
+
+import { getNewsletterFeed } from "backend/newsletterFeed.web";
+
+let newsletterData = null;
+let htmlReady = false;
+
+$w.onReady(function () {
+
+  $w("#htmlNewsletterArchive").scrolling = "no";
+
+  $w("#htmlNewsletterArchive").onMessage((event) => {
+
+    if (
+      event.data &&
+      event.data.type === "newsletter-component-ready"
+    ) {
+      htmlReady = true;
+      sendNewsletterData();
+    }
+
+  });
+
+  loadNewsletters();
+
+});
+
+async function loadNewsletters() {
+
+  try {
+
+    newsletterData =
+      await getNewsletterFeed();
+
+  } catch (error) {
+
+    console.error(
+      "Could not load newsletter feed:",
+      error
+    );
+
+    newsletterData = {
+      success: false,
+      newsletters: []
+    };
+
+  }
+
+  sendNewsletterData();
+}
+
+function sendNewsletterData() {
+
+  if (
+    !htmlReady ||
+    !newsletterData
+  ) {
+    return;
+  }
+
+  $w("#htmlNewsletterArchive").postMessage({
+    type: "newsletter-data",
+    ...newsletterData
+  });
+
+}
