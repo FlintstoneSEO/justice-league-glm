@@ -21,7 +21,7 @@ $w.onReady(() => {
  */
 
 
-import { getNewsletterFeed } from "backend/newsletterFeed.web";
+import { getNewsletterFeed } from "backend/newsletterfeed.web";
 
 let newsletterData = null;
 let htmlReady = false;
