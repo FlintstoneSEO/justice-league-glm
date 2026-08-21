@@ -1,81 +1,45 @@
-/* import { getEblastData } from 'backend/fetchEblastData.jsw';
-
-$w.onReady(() => {
-    getEblastData()
-        .then((data) => {
-            // Sort newest to oldest
-            const sorted = data.sort((a, b) => new Date(b.date) - new Date(a.date));
-            $w("#eblastRepeater").data = sorted;
-
-            $w("#eblastRepeater").onItemReady(($item, itemData) => {
-                $item("#dateText").text = itemData.date;
-                $item("#subjectText").text = itemData.subject;
-                $item("#viewBtn").link = itemData.link;
-                $item("#viewBtn").label = "Read More";
-            });
-        })
-        .catch((error) => {
-            console.error("Error loading eblast data:", error);
-        });
-});
- */
-
-
 import { getNewsletterFeed } from "backend/newsletterfeed.web";
 
 let newsletterData = null;
 let htmlReady = false;
 
-$w.onReady(function () {
-
-  $w("#htmlNewsletterArchive").scrolling = "no";
+$w.onReady(() => {
+  // "auto" is the Wix-supported setting that prevents expanded archive cards
+  // from being clipped when the component is shorter than its content.
+  $w("#htmlNewsletterArchive").scrolling = "auto";
 
   $w("#htmlNewsletterArchive").onMessage((event) => {
-
     if (
       event.data &&
+      typeof event.data === "object" &&
       event.data.type === "newsletter-component-ready"
     ) {
       htmlReady = true;
       sendNewsletterData();
     }
-
   });
 
   loadNewsletters();
-
 });
 
 async function loadNewsletters() {
-
   try {
-
-    newsletterData =
-      await getNewsletterFeed();
-
+    newsletterData = await getNewsletterFeed();
   } catch (error) {
-
-    console.error(
-      "Could not load newsletter feed:",
-      error
-    );
-
+    console.error("Could not load newsletter feed:", error);
     newsletterData = {
       success: false,
-      newsletters: []
+      count: 0,
+      newsletters: [],
+      message: "Unable to load newsletters right now. Please try again later."
     };
-
   }
 
   sendNewsletterData();
 }
 
 function sendNewsletterData() {
-
-  if (
-    !htmlReady ||
-    !newsletterData
-  ) {
+  if (!htmlReady || !newsletterData) {
     return;
   }
 
@@ -83,5 +47,4 @@ function sendNewsletterData() {
     type: "newsletter-data",
     ...newsletterData
   });
-
 }

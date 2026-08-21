@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>E-News Briefs Archive</title>
+    <style>
+      :root { color-scheme: dark; --ink:#090b0a; --panel:#141916; --line:#354036; --white:#f7f8f4; --muted:#b9c0b9; --yellow:#f4cf3a; --green:#78ad46; --radius:14px; }
+      * { box-sizing:border-box; } body { margin:0; background:var(--ink); color:var(--white); font:16px/1.5 Arial, Helvetica, sans-serif; }
+      .archive { max-width:1240px; margin:auto; padding:24px; } .eyebrow { color:var(--yellow); font-size:.76rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; }
+      h1,h2,p { margin-top:0; } h1 { max-width:19ch; margin:.25rem 0 1.3rem; font-size:clamp(2rem,5vw,3.7rem); line-height:1; letter-spacing:-.045em; }
+      .controls { display:grid; grid-template-columns:1fr 180px; gap:12px; margin-bottom:28px; } input,select,button { min-height:46px; border-radius:8px; font:inherit; } input,select { width:100%; border:1px solid var(--line); background:#101410; color:var(--white); padding:0 13px; } input:focus,select:focus,a:focus,button:focus { outline:3px solid var(--yellow); outline-offset:3px; }
+      .featured { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(200px,.6fr); gap:24px; border:1px solid var(--green); border-left:6px solid var(--yellow); border-radius:var(--radius); background:linear-gradient(120deg,#192017,#101410); padding:clamp(20px,4vw,42px); margin-bottom:30px; }
+      .date { color:var(--yellow); font-size:.86rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; } h2 { font-size:clamp(1.55rem,3vw,2.35rem); line-height:1.08; letter-spacing:-.025em; } .excerpt { color:var(--muted); }
+      .action,button { display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--yellow); background:var(--yellow); color:#111; font-weight:700; padding:0 16px; text-decoration:none; cursor:pointer; white-space:nowrap; } .action:active,button:active { transform:translateY(1px); } .featured .action { align-self:end; }
+      .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; } .card { display:flex; flex-direction:column; min-height:250px; border:1px solid var(--line); border-top:3px solid var(--green); border-radius:var(--radius); background:var(--panel); padding:21px; }
+      .card h2 { font-size:1.3rem; margin:.65rem 0; } .card .action { margin-top:auto; align-self:flex-start; background:transparent; color:var(--yellow); } .card .action:hover { background:var(--yellow); color:#111; }
+      .load-wrap { display:flex; justify-content:center; padding:28px 0 8px; } .state { border:1px solid var(--line); border-radius:var(--radius); padding:25px; color:var(--muted); text-align:center; } .skeleton { min-height:250px; background:linear-gradient(90deg,#141916 25%,#202720 50%,#141916 75%); background-size:200% 100%; animation:pulse 1.4s infinite; } @keyframes pulse { to { background-position:-200% 0; } }
+      .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; } [hidden] { display:none!important; }
+      @media (max-width:800px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .featured { grid-template-columns:1fr; } .featured .action { justify-self:start; } } @media (max-width:560px) { .archive { padding:16px; } .controls,.grid { grid-template-columns:1fr; } }
+      @media (prefers-reduced-motion:reduce) { *,*:before,*:after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+    </style>
+  </head>
+  <body>
+    <main class="archive" aria-labelledby="archive-title">
+      <p class="eyebrow">Justice League of Greater Lansing</p><h1 id="archive-title">E-News Briefs</h1>
+      <div class="controls" aria-label="Archive filters"><label><span class="sr-only">Search newsletters</span><input id="search" type="search" placeholder="Search newsletters" autocomplete="off"></label><label><span class="sr-only">Filter by year</span><select id="year"><option value="">All years</option></select></label></div>
+      <div id="content" aria-live="polite"><div class="grid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div></div>
+    </main>
+    <script>
+      (function () {
+        var allNewsletters = [], visibleCount = 6;
+        var content = document.getElementById("content"), search = document.getElementById("search"), year = document.getElementById("year");
+        function escapeHtml(value) { var div = document.createElement("div"); div.textContent = String(value || ""); return div.innerHTML; }
+        function isNewsletter(item) { return item && typeof item.title === "string" && typeof item.description === "string" && typeof item.link === "string" && /^https?:\/\//i.test(item.link); }
+        function formatDate(item) { if (!item.dateISO) return item.pubDate ? escapeHtml(item.pubDate) : "Date unavailable"; var date = new Date(item.dateISO); return isNaN(date.getTime()) ? "Date unavailable" : date.toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"}); }
+        function filtered() { var term = search.value.trim().toLowerCase(), selectedYear = year.value; return allNewsletters.filter(function (item) { return (!selectedYear || item.year === selectedYear) && (!term || (item.title + " " + item.description).toLowerCase().indexOf(term) !== -1); }); }
+        function card(item) { return '<article class="card"><div class="date">' + formatDate(item) + '</div><h2>' + escapeHtml(item.title) + '</h2><p class="excerpt">' + escapeHtml(item.description) + '</p><a class="action" href="' + escapeHtml(item.link) + '" target="_blank" rel="noopener noreferrer">Read newsletter<span class="sr-only">: ' + escapeHtml(item.title) + '</span></a></article>'; }
+        function render() { var list = filtered(); if (!list.length) { content.innerHTML = '<div class="state">No newsletters match those filters.</div>'; return; } var latest = list[0], rest = list.slice(1, visibleCount); content.innerHTML = '<article class="featured"><div><div class="date">Latest issue · ' + formatDate(latest) + '</div><h2>' + escapeHtml(latest.title) + '</h2><p class="excerpt">' + escapeHtml(latest.description) + '</p></div><a class="action" href="' + escapeHtml(latest.link) + '" target="_blank" rel="noopener noreferrer">Read latest<span class="sr-only">: ' + escapeHtml(latest.title) + '</span></a></article><section class="grid" aria-label="Newsletter archive">' + rest.map(card).join("") + '</section>' + (list.length > visibleCount ? '<div class="load-wrap"><button id="load-more" type="button">Load more newsletters</button></div>' : ''); var button = document.getElementById("load-more"); if (button) button.addEventListener("click", function () { visibleCount += 6; render(); }); }
+        function populateYears() { var years = allNewsletters.map(function (item) { return item.year; }).filter(Boolean).filter(function (value, index, array) { return array.indexOf(value) === index; }).sort(function(a,b){return b-a;}); year.innerHTML = '<option value="">All years</option>' + years.map(function(value){return '<option value="' + escapeHtml(value) + '">' + escapeHtml(value) + '</option>';}).join(""); }
+        function showError(message) { content.innerHTML = '<div class="state" role="alert">' + escapeHtml(message || "Unable to load newsletters right now. Please try again later.") + '</div>'; }
+        search.addEventListener("input", function () { visibleCount = 6; render(); }); year.addEventListener("change", function () { visibleCount = 6; render(); });
+        window.addEventListener("message", function (event) { var data = event.data; if (event.source !== window.parent || !data || typeof data !== "object" || data.type !== "newsletter-data" || typeof data.success !== "boolean" || !Array.isArray(data.newsletters)) return; if (!data.success) { showError(data.message); return; } allNewsletters = data.newsletters.filter(isNewsletter); populateYears(); render(); });
+        window.parent.postMessage({ type: "newsletter-component-ready" }, "*");
+      }());
+    </script>
+  </body>
+</html>
