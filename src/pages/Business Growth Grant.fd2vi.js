@@ -2,10 +2,12 @@
 // “Hello, World!” Example: https://learn-code.wix.com/en/article/hello-world
 
 const FAQ_EMBED_ID = "#htmlBusinessGrowthGrantFaq";
+const FAQ_STRIP_ID = "#faqStrip";
 const EMBED_HEIGHT_BUFFER = 16;
 
 $w.onReady(() => {
   const faqEmbed = $w(FAQ_EMBED_ID);
+  const faqStrip = $w(FAQ_STRIP_ID);
 
   faqEmbed.scrolling = "no";
 
@@ -19,7 +21,10 @@ $w.onReady(() => {
       return;
     }
 
-    faqEmbed.height = Math.ceil(height) + EMBED_HEIGHT_BUFFER;
+    const contentHeight = Math.ceil(height) + EMBED_HEIGHT_BUFFER;
+
+    faqEmbed.height = contentHeight;
+    faqStrip.height = contentHeight;
   });
 
   faqEmbed.postMessage({
