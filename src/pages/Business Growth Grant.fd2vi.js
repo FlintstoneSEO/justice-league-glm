@@ -1,10 +1,28 @@
 // API Reference: https://www.wix.com/velo/reference/api-overview/introduction
 // “Hello, World!” Example: https://learn-code.wix.com/en/article/hello-world
 
-$w.onReady(function () {
-    // Write your JavaScript here
+const FAQ_EMBED_ID = "#htmlBusinessGrowthGrantFaq";
+const EMBED_HEIGHT_BUFFER = 16;
 
-    // To select an element by ID use: $w('#elementID')
+$w.onReady(() => {
+  const faqEmbed = $w(FAQ_EMBED_ID);
 
-    // Click 'Preview' to run your code
+  faqEmbed.scrolling = "no";
+
+  faqEmbed.onMessage((event) => {
+    const { type, height } = event.data || {};
+
+    if (
+      type !== "business-growth-grant-faq-height" ||
+      !Number.isFinite(height)
+    ) {
+      return;
+    }
+
+    faqEmbed.height = Math.ceil(height) + EMBED_HEIGHT_BUFFER;
+  });
+
+  faqEmbed.postMessage({
+    type: "request-business-growth-grant-faq-height"
+  });
 });
