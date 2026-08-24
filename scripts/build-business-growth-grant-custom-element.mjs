@@ -76,7 +76,7 @@ class BusinessGrowthGrant extends HTMLElement {
       host.className = 'section-host';
       host.dataset.section = section.key;
       host.attachShadow({ mode: 'open' });
-      host.shadowRoot.innerHTML = \`<style>:host{display:block;font-family:Arial,Helvetica,sans-serif}\${section.css}</style>\${section.markup}\`;
+      host.shadowRoot.innerHTML = \`<style>:host{display:block;font-family:Arial,Helvetica,sans-serif}a:focus-visible,button:focus-visible{outline:3px solid #f4b400;outline-offset:4px}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}\${section.css}</style>\${section.markup}\`;
       main.append(host);
       this.bindSectionEvents(host);
     }

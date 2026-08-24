@@ -11,3 +11,13 @@
 3. Stretch it full width and allow content height. Optionally add `hero-image-url` with the approved public Wix Media Manager image URL; no approved image asset was found in the repo.
 4. Preview desktop and mobile, then remove the old hero, about, and FAQ HTML embeds and their spacer strips only after confirming the new element.
 5. Set Wix SEO title to `African American Business Growth Grant | Justice League GLM` and meta description to `Apply for the Justice League of Greater Lansing Michigan African American Business Growth Grant. Two $11,250 grants are available to eligible Black-owned businesses in Greater Lansing.`
+
+## Updating section designs
+
+The component is generated from `Home.html`, `About.html`, `Lead Grantor.html`, `Eligibility.html`, `How to Apply.html`, `Timeline.html`, `FAQ.html`, and `Closing.html` in `wix-embeds/`. After editing any of those source files, regenerate the public component with:
+
+```text
+npm run build:grant
+```
+
+The generator preserves each section's isolated styling, removes iframe messaging, keeps the approved Google Form URL, and adds the custom-element navigation and FAQ behavior.
