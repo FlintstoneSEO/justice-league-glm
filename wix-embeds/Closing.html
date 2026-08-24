@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --black: #050505;
+      --white: #ffffff;
+      --muted: #d1d1d1;
+
+      --red: #d71920;
+      --green: #006633;
+      --green-light: #087a45;
+      --yellow: #f4b400;
+
+      --border: rgba(255,255,255,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .final-cta {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      color: var(--white);
+
+      background:
+        radial-gradient(
+          circle at 82% 50%,
+          rgba(244,180,0,0.08),
+          transparent 30%
+        ),
+        linear-gradient(
+          110deg,
+          #050505 0%,
+          #0b0b0b 48%,
+          #003c20 100%
+        );
+
+      border-top: 1px solid rgba(244,180,0,0.40);
+      border-bottom: 1px solid rgba(244,180,0,0.40);
+    }
+
+    .final-cta::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+
+      background: linear-gradient(
+        90deg,
+        var(--red) 0 33%,
+        var(--yellow) 33% 66%,
+        var(--green) 66% 100%
+      );
+    }
+
+    .final-cta-inner {
+      position: relative;
+      z-index: 2;
+
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 64px 34px;
+
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .cta-copy {
+      max-width: 760px;
+    }
+
+    .cta-kicker {
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 12px;
+    }
+
+    .cta-title {
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.05;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+    }
+
+    .cta-title span {
+      color: var(--yellow);
+    }
+
+    .cta-text {
+      max-width: 690px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+
+    .cta-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 22px;
+    }
+
+    .cta-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .cta-meta-icon {
+      color: var(--yellow);
+      font-size: 18px;
+    }
+
+    .cta-action {
+      min-width: 290px;
+      padding: 28px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(0,102,51,0.96),
+          rgba(0,73,36,0.98)
+        );
+
+      border: 1px solid rgba(244,180,0,0.72);
+      text-align: center;
+      box-shadow: 0 18px 42px rgba(0,0,0,0.35);
+    }
+
+    .grant-small-label {
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 7px;
+    }
+
+    .grant-small-amount {
+      font-size: 40px;
+      line-height: 1;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .grant-small-text {
+      color: #d9ece2;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+
+      width: 100%;
+      padding: 17px 22px;
+
+      background: var(--yellow);
+      color: #111111;
+
+      text-decoration: none;
+      text-transform: uppercase;
+
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      background: #ffc529;
+    }
+
+    .cta-button span {
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .cta-help {
+      margin-top: 14px;
+      color: #cfe1d7;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .cta-help a {
+      color: var(--yellow);
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .cta-help a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 850px) {
+      .final-cta-inner {
+        grid-template-columns: 1fr;
+        gap: 34px;
+        padding: 54px 26px;
+      }
+
+      .cta-action {
+        max-width: 500px;
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .final-cta-inner {
+        padding: 46px 20px;
+      }
+
+      .cta-title {
+        font-size: 36px;
+      }
+
+      .cta-meta {
+        display: grid;
+        gap: 10px;
+      }
+
+      .cta-action {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<section class="final-cta">
+
+  <div class="final-cta-inner">
+
+    <div class="cta-copy">
+
+      <div class="cta-kicker">
+        Ready to Apply?
+      </div>
+
+      <h2 class="cta-title">
+        Take the Next Step Toward
+        <span>Business Growth</span>
+      </h2>
+
+      <p class="cta-text">
+        If your business meets the program eligibility requirements,
+        complete your application and submit all required financial
+        documentation before the deadline.
+      </p>
+
+      <div class="cta-meta">
+
+        <div class="cta-meta-item">
+          <span class="cta-meta-icon">●</span>
+          Applications Open August 30, 2026
+        </div>
+
+        <div class="cta-meta-item">
+          <span class="cta-meta-icon">●</span>
+          Deadline September 30, 2026
+        </div>
+
+        <div class="cta-meta-item">
+          <span class="cta-meta-icon">●</span>
+          $11,250 Grant
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <aside class="cta-action">
+
+      <div class="grant-small-label">
+        2026 Business Growth Grant
+      </div>
+
+      <div class="grant-small-amount">
+        $11,250
+      </div>
+
+      <div class="grant-small-text">
+        Funding for eligible African American-owned businesses
+        pursuing measurable growth opportunities.
+      </div>
+
+      <a
+        href="https://forms.gle/XJ8EVU4SZcr7AqEQ6"
+        class="cta-button"
+        target="_top"
+      >
+        Apply Now
+        <span>›</span>
+      </a>
+
+      <div class="cta-help">
+        Questions?
+        <a href="mailto:info@justiceleagueglm.org">
+          Contact JLGLM
+        </a>
+      </div>
+
+    </aside>
+
+  </div>
+
+</section>
+
+</body>
+</html>

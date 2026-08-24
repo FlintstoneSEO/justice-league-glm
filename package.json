@@ -6,6 +6,7 @@
     "react": "16.14.0"
   },
   "scripts": {
+    "build:grant": "node scripts/build-business-growth-grant-custom-element.mjs",
     "postinstall": "wix sync-types",
     "dev": "wix dev",
     "lint": "eslint ."

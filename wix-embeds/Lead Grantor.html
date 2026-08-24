@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --black: #050505;
+      --black-soft: #0b0b0b;
+      --panel: #111111;
+
+      --white: #ffffff;
+      --muted: #c9c9c9;
+
+      --red: #d71920;
+      --green: #006633;
+      --yellow: #f4b400;
+
+      --border: rgba(255,255,255,0.12);
+      --yellow-border: rgba(244,180,0,0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .grantor-section {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle at 80% 20%,
+          rgba(244,180,0,0.06),
+          transparent 30%
+        ),
+        linear-gradient(
+          180deg,
+          #070707 0%,
+          #0b0b0b 100%
+        );
+
+      color: var(--white);
+
+      border-top: 1px solid rgba(244,180,0,0.28);
+      border-bottom: 1px solid rgba(244,180,0,0.38);
+    }
+
+    .grantor-section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 5px;
+
+      background: linear-gradient(
+        90deg,
+        var(--red) 0 33%,
+        var(--yellow) 33% 66%,
+        var(--green) 66% 100%
+      );
+    }
+
+    .grantor-inner {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+
+      padding: 72px 34px;
+
+      display: grid;
+      grid-template-columns:
+        minmax(0, 0.95fr)
+        minmax(0, 1.05fr);
+
+      gap: 58px;
+      align-items: center;
+    }
+
+    /* IMAGE */
+
+    .grantor-image-wrap {
+      position: relative;
+    }
+
+    .grantor-image {
+      width: 100%;
+      height: 520px;
+
+      display: block;
+      object-fit: cover;
+      object-position: center;
+
+      border: 1px solid rgba(244,180,0,0.55);
+
+      box-shadow:
+        0 24px 55px rgba(0,0,0,0.40);
+    }
+
+    .image-accent {
+      position: absolute;
+      left: -12px;
+      bottom: -12px;
+
+      width: 120px;
+      height: 120px;
+
+      border-left: 4px solid var(--yellow);
+      border-bottom: 4px solid var(--yellow);
+
+      pointer-events: none;
+    }
+
+    /* CONTENT */
+
+    .grantor-content {
+      max-width: 600px;
+    }
+
+    .grantor-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+
+      margin-bottom: 14px;
+
+      color: var(--yellow);
+
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .grantor-kicker::before {
+      content: "";
+
+      width: 30px;
+      height: 3px;
+
+      background: var(--red);
+    }
+
+    .grantor-title {
+      margin-bottom: 20px;
+
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.04;
+      font-weight: 900;
+
+      text-transform: uppercase;
+      letter-spacing: -0.025em;
+    }
+
+    .grantor-title span {
+      color: var(--yellow);
+    }
+
+    .color-rule {
+      width: 110px;
+      height: 4px;
+
+      margin-bottom: 26px;
+
+      background: linear-gradient(
+        90deg,
+        var(--red) 0 33%,
+        var(--yellow) 33% 66%,
+        var(--green) 66% 100%
+      );
+    }
+
+    .grantor-copy {
+      margin-bottom: 18px;
+
+      color: var(--muted);
+
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .grantor-copy strong {
+      color: var(--white);
+    }
+
+    /* FOUNDATION PANEL */
+
+    .foundation-card {
+      margin-top: 28px;
+
+      padding: 26px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,0.035),
+          rgba(255,255,255,0.01)
+        );
+
+      border: 1px solid var(--yellow-border);
+    }
+
+    .foundation-logo-wrap {
+      width: 100%;
+
+      padding: 18px;
+
+      margin-bottom: 20px;
+
+      background: #ffffff;
+    }
+
+    .foundation-logo {
+      display: block;
+
+      width: 100%;
+      max-width: 420px;
+
+      margin: 0 auto;
+
+      height: auto;
+    }
+
+    .investment-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .investment-label {
+      color: #aaaaaa;
+
+      font-size: 11px;
+      font-weight: 900;
+
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+
+      margin-bottom: 5px;
+    }
+
+    .investment-amount {
+      color: var(--yellow);
+
+      font-size: 34px;
+      line-height: 1;
+
+      font-weight: 900;
+    }
+
+    .investment-description {
+      max-width: 250px;
+
+      color: #dddddd;
+
+      font-size: 13px;
+      line-height: 1.5;
+
+      text-align: right;
+    }
+
+    /* QUOTE */
+
+    .community-note {
+      margin-top: 24px;
+
+      padding: 19px 22px;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,102,51,0.15),
+          rgba(0,102,51,0.03)
+        );
+
+      border-left: 4px solid var(--green);
+
+      color: #e8e8e8;
+
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .community-note strong {
+      color: var(--yellow);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 900px) {
+      .grantor-inner {
+        grid-template-columns: 1fr;
+
+        gap: 44px;
+
+        padding: 58px 26px;
+      }
+
+      .grantor-image {
+        height: auto;
+        max-height: 620px;
+      }
+
+      .grantor-content {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .grantor-inner {
+        padding: 46px 20px;
+      }
+
+      .grantor-title {
+        font-size: 36px;
+      }
+
+      .investment-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .investment-description {
+        max-width: 100%;
+        text-align: left;
+      }
+
+      .foundation-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<section class="grantor-section">
+
+  <div class="grantor-inner">
+
+    <!-- PHOTO -->
+
+    <div class="grantor-image-wrap">
+
+      <img
+        src="https://static.wixstatic.com/media/de1bf2_e298bc9b9546403f9b3335eeb0b14c8a~mv2.jpg"
+        alt="Justice League of Greater Lansing Michigan receives community investment support from Stable Communities Foundation"
+        class="grantor-image"
+      />
+
+      <div class="image-accent"></div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="grantor-content">
+
+      <div class="grantor-kicker">
+        Lead Grantor
+      </div>
+
+      <h2 class="grantor-title">
+        Made Possible Through
+        <span>Community Investment</span>
+      </h2>
+
+      <div class="color-rule"></div>
+
+      <p class="grantor-copy">
+        The <strong>Justice League of Greater Lansing Michigan</strong>
+        proudly recognizes
+        <strong>Stable Communities Foundation</strong>
+        as the lead grantor supporting the 2026 Business Growth
+        Grant initiative.
+      </p>
+
+      <p class="grantor-copy">
+        Through this investment, Stable Communities Foundation is
+        helping expand access to capital for African American-owned
+        businesses in the Greater Lansing area and supporting
+        opportunities for sustainable growth, job creation, and
+        stronger communities.
+      </p>
+
+
+      <!-- FOUNDATION INFORMATION -->
+
+      <div class="foundation-card">
+
+        <div class="foundation-logo-wrap">
+
+          <img
+            src="https://static.wixstatic.com/media/de1bf2_a424da8927ef4298b34b0ef2d5d8de25~mv2.png"
+            alt="Stable Communities Foundation, Powered by LAFCU"
+            class="foundation-logo"
+          />
+
+        </div>
+
+
+        <div class="investment-row">
+
+          <div>
+
+            <div class="investment-label">
+              Community Investment
+            </div>
+
+            <div class="investment-amount">
+              $50,000
+            </div>
+
+          </div>
+
+
+          <div class="investment-description">
+            Supporting the Justice League of Greater Lansing Michigan
+            and its work to strengthen economic opportunity in the
+            Greater Lansing community.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="community-note">
+        <strong>Investing in businesses. Building stronger communities.</strong>
+        This partnership helps advance JLGLM's Entrepreneurship
+        Reparations pillar and its commitment to meaningful,
+        sustainable economic growth.
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</body>
+</html>

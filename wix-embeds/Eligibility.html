@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --black: #050505;
+      --black-soft: #0b0b0b;
+      --panel: #111111;
+      --panel-hover: #151515;
+
+      --white: #ffffff;
+      --muted: #bdbdbd;
+
+      --red: #d71920;
+      --green: #006633;
+      --yellow: #f4b400;
+
+      --border: rgba(255,255,255,0.12);
+      --yellow-border: rgba(244,180,0,0.38);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .eligibility-section {
+      position: relative;
+      width: 100%;
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(244,180,0,0.05),
+          transparent 35%
+        ),
+        linear-gradient(
+          180deg,
+          #050505 0%,
+          #090909 100%
+        );
+      color: var(--white);
+      border-bottom: 1px solid rgba(244,180,0,0.38);
+      overflow: hidden;
+    }
+
+    .eligibility-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.12;
+      background-image:
+        linear-gradient(
+          135deg,
+          transparent 0 48%,
+          rgba(255,255,255,0.04) 48% 49%,
+          transparent 49%
+        );
+      background-size: 34px 34px;
+    }
+
+    .eligibility-inner {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 70px 34px 78px;
+    }
+
+    /* HEADER */
+
+    .section-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 48px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .section-kicker::before,
+    .section-kicker::after {
+      content: "";
+      width: 30px;
+      height: 2px;
+      background: var(--yellow);
+    }
+
+    .section-title {
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.05;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+    }
+
+    .section-title .accent {
+      color: var(--yellow);
+    }
+
+    .section-intro {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* CARDS */
+
+    .eligibility-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eligibility-card {
+      position: relative;
+      min-height: 260px;
+      padding: 30px 20px;
+      text-align: center;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,0.015),
+          rgba(255,255,255,0)
+        );
+
+      border-right: 1px solid var(--border);
+      transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+    }
+
+    .eligibility-card:last-child {
+      border-right: none;
+    }
+
+    .eligibility-card:hover {
+      background: rgba(244,180,0,0.045);
+    }
+
+    .eligibility-card::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: var(--yellow);
+      transition: width 0.25s ease;
+    }
+
+    .eligibility-card:hover::after {
+      width: 70%;
+    }
+
+    .icon-wrap {
+      width: 68px;
+      height: 68px;
+      margin-bottom: 20px;
+      border-radius: 50%;
+
+      display: grid;
+      place-items: center;
+
+      border: 2px solid var(--yellow);
+      background: rgba(244,180,0,0.05);
+      color: var(--yellow);
+    }
+
+    .icon-wrap svg {
+      width: 34px;
+      height: 34px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card-number {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      color: rgba(255,255,255,0.08);
+      font-size: 30px;
+      font-weight: 900;
+    }
+
+    .card-title {
+      color: var(--white);
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 11px;
+    }
+
+    .card-text {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .card-text strong {
+      color: var(--yellow);
+      font-weight: 900;
+    }
+
+    /* FOOTER NOTE */
+
+    .eligibility-note {
+      margin-top: 38px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .eligibility-note-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+
+      max-width: 840px;
+      padding: 20px 24px;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,102,51,0.14),
+          rgba(0,102,51,0.03)
+        );
+
+      border: 1px solid rgba(0,102,51,0.5);
+      border-left: 4px solid var(--green);
+    }
+
+    .note-icon {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+      background: var(--green);
+      color: var(--white);
+
+      font-weight: 900;
+    }
+
+    .note-text {
+      color: #dedede;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .note-text strong {
+      color: var(--white);
+    }
+
+    .note-text a {
+      color: var(--yellow);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-text a:hover {
+      text-decoration: underline;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1100px) {
+      .eligibility-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .eligibility-card {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .eligibility-card:nth-child(3n) {
+        border-right: none;
+      }
+
+      .eligibility-card:nth-child(n+4) {
+        border-bottom: none;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .eligibility-inner {
+        padding: 52px 20px 58px;
+      }
+
+      .section-header {
+        margin-bottom: 36px;
+      }
+
+      .eligibility-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .eligibility-card {
+        min-height: auto;
+        padding: 28px 24px;
+
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .eligibility-card:nth-child(n+4) {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .eligibility-card:last-child {
+        border-bottom: none;
+      }
+
+      .icon-wrap {
+        width: 62px;
+        height: 62px;
+      }
+
+      .card-text {
+        max-width: 350px;
+      }
+
+      .eligibility-note-inner {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<section
+  class="eligibility-section"
+  id="eligibility"
+>
+
+  <div class="eligibility-inner">
+
+    <!-- HEADER -->
+
+    <header class="section-header">
+
+      <div class="section-kicker">
+        Before You Apply
+      </div>
+
+      <h2 class="section-title">
+        Eligibility
+        <span class="accent">Requirements</span>
+      </h2>
+
+      <p class="section-intro">
+        Applicants must meet the program eligibility requirements
+        and provide the required business and financial documentation
+        before the application can proceed to competitive review.
+      </p>
+
+    </header>
+
+
+    <!-- ELIGIBILITY CARDS -->
+
+    <div class="eligibility-grid">
+
+      <!-- CARD 1 -->
+      <article class="eligibility-card">
+
+        <span class="card-number">01</span>
+
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <circle cx="9" cy="8" r="3"></circle>
+            <circle cx="17" cy="9" r="2.5"></circle>
+            <path d="M3 20c0-4 2.5-7 6-7s6 3 6 7"></path>
+            <path d="M14 14c3 0 5 2.5 5 6"></path>
+          </svg>
+        </div>
+
+        <h3 class="card-title">
+          Applicant Eligibility
+        </h3>
+
+        <p class="card-text">
+          Applicant must identify as
+          <strong>Black / African American</strong>
+          consistent with the program's eligibility requirements.
+        </p>
+
+      </article>
+
+
+      <!-- CARD 2 -->
+      <article class="eligibility-card">
+
+        <span class="card-number">02</span>
+
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <rect x="4" y="5" width="16" height="15" rx="2"></rect>
+            <path d="M8 3v4"></path>
+            <path d="M16 3v4"></path>
+            <path d="M4 10h16"></path>
+            <path d="M9 15l2 2 4-4"></path>
+          </svg>
+        </div>
+
+        <h3 class="card-title">
+          Operating History
+        </h3>
+
+        <p class="card-text">
+          The business must have been operating for a
+          <strong>minimum of three years.</strong>
+        </p>
+
+      </article>
+
+
+      <!-- CARD 3 -->
+      <article class="eligibility-card">
+
+        <span class="card-number">03</span>
+
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M15 8.5c-.7-.7-1.7-1-3-1-2 0-3 1-3 2.3 0 3.7 6 1.7 6 5 0 1.4-1.2 2.7-3.2 2.7-1.4 0-2.6-.5-3.4-1.3"></path>
+            <path d="M12 5v14"></path>
+          </svg>
+        </div>
+
+        <h3 class="card-title">
+          Annual Revenue
+        </h3>
+
+        <p class="card-text">
+          Business must have at least
+          <strong>$20,000 in annual business revenue.</strong>
+        </p>
+
+      </article>
+
+
+      <!-- CARD 4 -->
+      <article class="eligibility-card">
+
+        <span class="card-number">04</span>
+
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M6 3h9l4 4v14H6z"></path>
+            <path d="M15 3v5h5"></path>
+            <path d="M9 13h6"></path>
+            <path d="M9 17h6"></path>
+          </svg>
+        </div>
+
+        <h3 class="card-title">
+          LARA Good Standing
+        </h3>
+
+        <p class="card-text">
+          Business must be
+          <strong>registered and in good standing</strong>
+          with the Michigan Department of Licensing and
+          Regulatory Affairs.
+        </p>
+
+      </article>
+
+
+      <!-- CARD 5 -->
+      <article class="eligibility-card">
+
+        <span class="card-number">05</span>
+
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"></path>
+            <circle cx="12" cy="9" r="2.3"></circle>
+          </svg>
+        </div>
+
+        <h3 class="card-title">
+          Tri-County Location
+        </h3>
+
+        <p class="card-text">
+          The business must be physically located in
+          <strong>Ingham, Clinton, or Eaton County</strong>
+          in Michigan.
+        </p>
+
+      </article>
+
+
+      <!-- CARD 6 -->
+      <article class="eligibility-card">
+
+        <span class="card-number">06</span>
+
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 20V10"></path>
+            <path d="M10 20V4"></path>
+            <path d="M16 20v-7"></path>
+            <path d="M22 20H2"></path>
+            <path d="M4 7l5-3 5 4 6-5"></path>
+          </svg>
+        </div>
+
+        <h3 class="card-title">
+          Financial Records
+        </h3>
+
+        <p class="card-text">
+          Applicants must provide complete
+          <strong>2024 and 2025 Profit &amp; Loss statements.</strong>
+        </p>
+
+      </article>
+
+    </div>
+
+
+    <!-- NOTE -->
+
+    <div class="eligibility-note">
+
+      <div class="eligibility-note-inner">
+
+        <div class="note-icon">
+          i
+        </div>
+
+        <div class="note-text">
+
+          <strong>Not sure if your business qualifies?</strong><br>
+
+          Review the full program FAQ before beginning your application
+          or contact
+
+          <a href="mailto:info@justiceleagueglm.org">
+            info@justiceleagueglm.org
+          </a>
+
+          with eligibility questions.
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</body>
+</html>
