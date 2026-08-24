@@ -6,7 +6,7 @@
 
 ## Wix Editor setup
 
-1. Host `wix-embeds/business-growth-grant-custom-element.js` at a stable public HTTPS URL that serves JavaScript. This Velo Git repository does not automatically publish `wix-embeds/` as a web URL.
+1. GitHub Pages hosts the script at `https://flintstoneseo.github.io/justice-league-glm/wix-embeds/business-growth-grant-custom-element.js`. After changing the component, push the change to `main` and wait for the Pages deployment to finish.
 2. Open the Business Growth Grant page, add a Custom Element, set that source URL, and enter `jl-business-growth-grant` as its tag.
 3. Stretch it full width and allow content height. Optionally add `hero-image-url` with the approved public Wix Media Manager image URL; no approved image asset was found in the repo.
 4. Preview desktop and mobile, then remove the old hero, about, and FAQ HTML embeds and their spacer strips only after confirming the new element.
