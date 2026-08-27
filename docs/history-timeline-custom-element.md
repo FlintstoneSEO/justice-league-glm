@@ -7,7 +7,7 @@
 
 ## CMS setup
 
-Create a Wix CMS collection with ID `HistoryTimeline`. Site visitors need read permission for published entries.
+This site uses the Wix CMS collection ID `Import2` (the collection's display name can be `HistoryTimeline`). Site visitors need read permission for published entries.
 
 | Field key | Wix field type | Required |
 | --- | --- | --- |

@@ -1,6 +1,6 @@
 import wixData from 'wix-data';
 
-const COLLECTION = 'HistoryTimeline';
+const COLLECTION = 'Import2';
 const ELEMENT_ID = '#historyTimeline';
 
 function plainText(value) {
