@@ -4,7 +4,7 @@ import path from 'node:path';
 const root = process.cwd();
 const embedsDirectory = path.join(root, 'wix-embeds');
 const outputPath = path.join(embedsDirectory, 'business-growth-grant-custom-element.js');
-const applicationUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfwRtkcuoRXAWCSJl59WNCHC7fHQPOIgMghWZhAOn-maysEkQ/viewform?usp=send_form';
+const applicationUrl = 'https://forms.gle/LzuDSyiCvp7w8qpN9';
 const sources = [
   ['home', 'Home.html'],
   ['about', 'About.html'],
@@ -35,7 +35,7 @@ function normalizeMarkup(markup) {
   return markup
     .replace(/<script\b[\s\S]*?<\/script>/gi, '')
     .replace(/<!--([\s\S]*?)-->/g, '')
-    .replaceAll('https://forms.gle/XJ8EVU4SZcr7AqEQ6', applicationUrl)
+    .replaceAll('https://forms.gle/LzuDSyiCvp7w8qpN9', applicationUrl)
     .replace(/target=["']_top["']/gi, 'target="_blank" rel="noopener noreferrer"')
     .replace(/<svg(?![^>]*\baria-hidden=)/g, '<svg aria-hidden="true" focusable="false"')
     .trim();
